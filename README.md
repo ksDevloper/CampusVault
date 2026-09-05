@@ -1,4 +1,4 @@
-# 🎓 CampusVault [https://campusvault-btech.netlify.app/]
+# 🎓 CampusVault
 
 > **An open, community-driven study material repository for college students to easily share, discover, and rate lecture notes, assignments, and previous year examination papers.**
 

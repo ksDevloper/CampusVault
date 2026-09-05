@@ -1,0 +1,92 @@
+# 100% Free Stack: Cloudflare D1 + ImageKit (20 GB Free Storage)
+### Strictly NO Credit Card / Payment Method Required!
+
+This setup provides:
+1. **ImageKit.io**: **20 GB free file storage** + 20 GB/month bandwidth for your PDFs & documents.
+2. **Cloudflare D1**: Serverless SQL database (free, no credit card required).
+3. **Cloudflare Worker**: Secure backend API connecting your website to D1 and ImageKit.
+
+---
+
+## Step 1: Get Free 20 GB Storage on ImageKit (No Credit Card)
+
+1. Go to [imagekit.io/registration](https://imagekit.io/registration) and sign up with your Google account or email. *(No credit card is asked).*
+2. Choose any name for your ImageKit ID (e.g., `campusvault`).
+3. Once inside the ImageKit dashboard:
+   - In the left sidebar, click **Developer options** (or the gear icon).
+   - Look under **API keys**:
+   - Copy your **Private API key** (it looks like `private_...`).
+
+---
+
+## Step 2: Set Up Cloudflare D1 Database (No Credit Card)
+
+1. Go to [dash.cloudflare.com](https://dash.cloudflare.com/) and log in.
+2. In the left menu, click **Storage & Databases** > **D1 SQL Database**.
+3. Click **Create database** > Name it `campusvault-db` > Click **Create**.
+4. Click on `campusvault-db` and select the **Console** tab.
+5. Paste the contents of [`schema.sql`](file:///c:/Study%20BTECH/CampusVoice/CollegeHelper/schema.sql):
+   ```sql
+   CREATE TABLE IF NOT EXISTS materials (
+       id INTEGER PRIMARY KEY AUTOINCREMENT,
+       title TEXT NOT NULL,
+       type TEXT NOT NULL,
+       author TEXT NOT NULL,
+       college TEXT NOT NULL,
+       subject TEXT NOT NULL,
+       description TEXT,
+       date TEXT NOT NULL,
+       fileName TEXT NOT NULL,
+       rating_sum INTEGER DEFAULT 0,
+       rating_count INTEGER DEFAULT 0
+   );
+
+   CREATE INDEX IF NOT EXISTS idx_materials_college ON materials(college);
+   CREATE INDEX IF NOT EXISTS idx_materials_subject ON materials(subject);
+   CREATE INDEX IF NOT EXISTS idx_materials_type ON materials(type);
+   ```
+6. Click **Execute**. Your database table is created!
+
+---
+
+## Step 3: Deploy the Cloudflare Worker API
+
+1. In Cloudflare, go to **Compute (Workers & Pages)** > **Workers & Pages**.
+2. Click **Create application** > **Create Worker** > Name it `campusvault-api` > Click **Deploy**.
+3. Click **Edit code**:
+   - Copy the entire code from [`worker.js`](file:///c:/Study%20BTECH/CampusVoice/CollegeHelper/worker.js) and paste it into Cloudflare's code editor.
+   - Click **Deploy**.
+4. Configure the D1 Database binding:
+   - Go back to Worker page > **Settings** > **Bindings**.
+   - Under **D1 Database Bindings**, click **Add**:
+     - Variable name: `DB`
+     - D1 database: `campusvault-db`
+   - Click **Save and Deploy**.
+5. Add your ImageKit Private Key:
+   - In Worker **Settings** > **Variables and Secrets** (or **Environment Variables**):
+     - Click **Add**:
+     - Variable name: `IMAGEKIT_PRIVATE_KEY`
+     - Value: Paste your `private_...` key from ImageKit.
+     - Click **Save and Deploy**.
+6. Copy your Worker URL (e.g., `https://campusvault-api.<your-subdomain>.workers.dev`).
+
+---
+
+## Step 4: Connect Frontend (`static/app.js`)
+
+Open [`static/app.js`](file:///c:/Study%20BTECH/CampusVoice/CollegeHelper/static/app.js#L57):
+Find line 57:
+```javascript
+const API_BASE_URL = 'https://campusvault-api.YOUR_SUBDOMAIN.workers.dev';
+```
+Replace it with your real Worker URL (e.g. `https://campusvault-api.yourname.workers.dev`).
+
+---
+
+## How It Works
+
+1. When a student fills out the **Contribute** form and selects a PDF, the file is sent to your **Cloudflare Worker**.
+2. The Worker securely uploads the PDF to **ImageKit** using your private key (20 GB free storage, fast global CDN).
+3. ImageKit returns the permanent download link (e.g., `https://ik.imagekit.io/.../notes.pdf`).
+4. The Worker saves the material details and download link into **Cloudflare D1**.
+5. When students browse CampusVault, all materials are loaded instantly, and clicking **Download** streams the file directly from ImageKit!
