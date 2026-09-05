@@ -67,7 +67,7 @@ graph TD
 ## 📁 Project Structure
 
 ```text
-CollegeHelper/
+CampusVault/
 ├── static/                     # Frontend website (Deploy this folder to Netlify)
 │   ├── index.html              # Main HTML structure & modals
 │   ├── app.js                  # Frontend logic & Worker API integration
@@ -88,7 +88,7 @@ CollegeHelper/
 
 ### 1. Clone the repository
 ```bash
-git clone https://github.com/YOUR_USERNAME/CollegeHelper.git
+git clone https://github.com/YOUR_USERNAME/CampusVault.git
 cd CollegeHelper
 ```
 
