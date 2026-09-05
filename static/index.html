@@ -1,0 +1,274 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CampusVault - College Study Materials</title>
+    <link rel="icon" type="image/svg+xml" href="favicon.svg">
+    <meta name="description"
+        content="Share and find college notes, assignments, and previous year papers easily. Sort by college and subject.">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&family=Inter:wght@400;500;600&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-4506448704448824"
+        crossorigin="anonymous"></script>
+</head>
+
+<body class="dark-theme">
+    <div class="background-elements">
+        <div class="blob blob-1"></div>
+        <div class="blob blob-2"></div>
+        <div class="blob blob-3"></div>
+    </div>
+
+    <nav class="navbar">
+        <div class="nav-container">
+            <div class="logo">
+                <i data-lucide="graduation-cap" class="logo-icon"></i>
+                <span>CampusVault</span>
+            </div>
+            <div class="nav-links">
+                <a href="#" class="active" data-filter="all">All Materials</a>
+                <a href="#" data-filter="notes">Notes</a>
+                <a href="#" data-filter="assignments">Assignments</a>
+                <a href="#" data-filter="papers">Past Papers</a>
+            </div>
+            <div class="nav-actions">
+                <button id="theme-toggle" class="icon-btn" aria-label="Toggle theme">
+                    <i data-lucide="sun"></i>
+                </button>
+                <button id="add-btn" class="primary-btn">
+                    <i data-lucide="plus"></i>
+                    <span>Contribute</span>
+                </button>
+            </div>
+        </div>
+    </nav>
+
+    <main class="container">
+        <header class="hero">
+            <h1>Elevate Your College Journey</h1>
+            <p>Access and share top-tier notes, assignments, and past papers tailored to your college and subjects.</p>
+
+            <div class="search-sort-bar glass-panel">
+                <div class="filter-group">
+                    <label for="college-select">College</label>
+                    <div class="select-wrapper">
+                        <i data-lucide="building"></i>
+                        <select id="college-select">
+                            <option value="all">All Colleges</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="divider"></div>
+
+                <div class="filter-group">
+                    <label for="subject-select">Subject</label>
+                    <div class="select-wrapper">
+                        <i data-lucide="book-open"></i>
+                        <select id="subject-select">
+                            <option value="all">All Subjects</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="divider"></div>
+
+                <div class="search-box">
+                    <i data-lucide="search"></i>
+                    <input type="text" id="search-input" placeholder="Search by title or author...">
+                </div>
+            </div>
+        </header>
+
+        <section class="materials-section">
+            <div class="section-header">
+                <h2>Discover Materials</h2>
+                <div class="active-filters">
+                    <!-- Badges injected by JS -->
+                </div>
+            </div>
+
+            <div class="grid" id="materials-grid">
+                <!-- Cards injected by JS -->
+            </div>
+
+            <div id="no-results" class="no-results hidden">
+                <i data-lucide="search-x"></i>
+                <h3>No materials found</h3>
+                <p>Try adjusting your filters or be the first to contribute!</p>
+            </div>
+        </section>
+    </main>
+
+    <footer class="site-footer glass-panel">
+        <div class="footer-container">
+            <p>&copy; 2026 CampusVault. Built by students, for students.</p>
+            <button id="suggest-btn" class="secondary-btn">
+                <i data-lucide="message-square"></i> Give a Suggestion
+            </button>
+        </div>
+    </footer>
+
+    <!-- Modal for adding content -->
+    <div class="modal-overlay" id="add-modal">
+        <div class="modal glass-panel">
+            <button class="close-btn" id="close-modal">
+                <i data-lucide="x"></i>
+            </button>
+            <div class="modal-header">
+                <h2>Contribute Material</h2>
+                <p>Help your peers by sharing your academic resources.</p>
+            </div>
+            <form id="add-form">
+                <div class="form-group">
+                    <label for="title">Title</label>
+                    <input type="text" id="title" required placeholder="e.g. Intro to Algorithms Notes">
+                </div>
+
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="type">Material Type</label>
+                        <select id="type" required>
+                            <option value="notes">Notes</option>
+                            <option value="assignments">Assignment</option>
+                            <option value="papers">Previous Year Paper</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="author">Your Name</label>
+                        <input type="text" id="author" required placeholder="John Doe">
+                    </div>
+                </div>
+
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="college">College</label>
+                        <input type="text" id="college" list="college-list" required placeholder="e.g. MIT">
+                        <datalist id="college-list">
+                            <!-- Populated by JS -->
+                        </datalist>
+                    </div>
+                    <div class="form-group">
+                        <label for="subject">Subject</label>
+                        <input type="text" id="subject" list="subject-list" required
+                            placeholder="e.g. Computer Science">
+                        <datalist id="subject-list">
+                            <!-- Populated by JS -->
+                        </datalist>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="description">Short Description</label>
+                    <textarea id="description" rows="3"
+                        placeholder="Briefly describe what this material covers..."></textarea>
+                </div>
+
+                <div class="form-group">
+                    <label for="material-file">Upload Material File (PDF, DOCX, IMG)</label>
+                    <input type="file" id="material-file" class="file-input" required
+                        accept=".pdf,.doc,.docx,.jpg,.png">
+                </div>
+
+                <button type="submit" class="primary-btn full-width">
+                    <i data-lucide="upload-cloud"></i>
+                    Publish Material
+                </button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Modal for Suggestions -->
+    <div class="modal-overlay" id="suggest-modal">
+        <div class="modal glass-panel">
+            <button class="close-btn" id="close-suggest-modal">
+                <i data-lucide="x"></i>
+            </button>
+            <div class="modal-header">
+                <h2>Send a Suggestion</h2>
+                <p>Have an idea for a new feature or spotted a bug? Let us know!</p>
+            </div>
+            <!-- FormSubmit action url. User must replace email! -->
+            <form action="https://formsubmit.co/karangemar99@gmail.com" method="POST">
+                <!-- Disable Captcha optionally -->
+                <input type="hidden" name="_captcha" value="false">
+                <!-- Redirect back to site after submit -->
+                <input type="hidden" name="_next" value="#">
+
+                <div class="form-group">
+                    <label for="sugg-name">Name *</label>
+                    <input type="text" id="sugg-name" name="name" placeholder="John Doe" required minlength="2">
+                </div>
+                <div class="form-group">
+                    <label for="sugg-email">Your Email *</label>
+                    <input type="email" id="sugg-email" name="email" placeholder="john@example.com" required>
+                </div>
+                <div class="form-group">
+                    <label for="sugg-message">Suggestion *</label>
+                    <textarea id="sugg-message" name="message" rows="4" required
+                        placeholder="I think this website would be cooler if..."></textarea>
+                </div>
+                <button type="submit" class="primary-btn full-width">
+                    <i data-lucide="send"></i>
+                    Send Message
+                </button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Modal for Reporting -->
+    <div class="modal-overlay" id="report-modal">
+        <div class="modal glass-panel">
+            <button class="close-btn" id="close-report-modal">
+                <i data-lucide="x"></i>
+            </button>
+            <div class="modal-header" style="margin-bottom: 1.5rem;">
+                <h2>Report Material</h2>
+                <p>Why are you reporting <strong id="report-material-title" style="color:var(--primary-color);">this
+                        item</strong>?</p>
+            </div>
+            <form id="report-form">
+                <input type="hidden" id="report-hidden-title">
+                <div class="form-group">
+                    <label>Reason for Reporting *</label>
+                    <select id="report-reason" required>
+                        <option value="" disabled selected>Select a reason...</option>
+                        <option value="Inappropriate Content">Inappropriate Content</option>
+                        <option value="Blank/Empty Document">Blank/Empty Document</option>
+                        <option value="Wrong Notes/Misleading">Wrong Notes/Misleading</option>
+                        <option value="Spam/Advertisement">Spam/Advertisement</option>
+                        <option value="Other">Other</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="report-details">Additional Details (Optional)</label>
+                    <textarea id="report-details" rows="3" placeholder="Tell us more about the issue..."></textarea>
+                </div>
+                <button type="submit" class="primary-btn full-width"
+                    style="background:#ef4444; box-shadow: 0 4px 14px 0 rgba(239, 68, 68, 0.39);">
+                    <i data-lucide="alert-triangle"></i>
+                    <span>Submit Report</span>
+                </button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Toast Notification -->
+    <div id="toast" class="toast hidden">
+        <div class="toast-content glass-panel">
+            <i data-lucide="info" id="toast-icon"></i>
+            <span id="toast-message">Notification message</span>
+        </div>
+    </div>
+
+    <script src="app.js"></script>
+</body>
+
+</html>
